@@ -81,44 +81,4 @@ router.post("/login", (req, res, next) => {
     });
 });
 
-router.get("/", (req, res, next) => {
-  User.find()
-    .select("email name _id")
-    .populate('email', 'name')
-    .exec()
-    .then(docs => {
-      res.status(200).json({
-        count: docs.length,
-        users: docs.map(doc => {
-          return {
-            _id: doc._id,
-            email: doc.email,
-            name: doc.name
-          };
-        })
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    });
-})
-
-router.delete("/:userId", (req, res, next) => {
-  User.remove({ _id: req.params.userId })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: "User deleted"
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
-});
-
 module.exports = router;
